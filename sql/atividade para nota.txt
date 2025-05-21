@@ -1,0 +1,301 @@
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| etecmcm2           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| test               |
++--------------------+
+6 rows in set (0.001 sec)
+
+MariaDB [(none)]> describe etecmcm2
+    -> ;
+ERROR 1046 (3D000): No database selected
+MariaDB [(none)]> show etecmcm2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'etecmcm2' at line 1
+MariaDB [(none)]> use etecmcm2;
+Database changed
+MariaDB [etecmcm2]> show tables;
++--------------------+
+| Tables_in_etecmcm2 |
++--------------------+
+| categorias         |
+| produtos           |
++--------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [etecmcm2]> describe categorias;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| id_categoria | int(11)      | NO   | PRI | NULL    | auto_increment |
+| nome_cat     | varchar(255) | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+2 rows in set (0.016 sec)
+
+MariaDB [etecmcm2]> clear
+MariaDB [etecmcm2]> ;
+ERROR: No query specified
+
+MariaDB [etecmcm2]> describe produtos;
++--------------+---------------+------+-----+---------+----------------+
+| Field        | Type          | Null | Key | Default | Extra          |
++--------------+---------------+------+-----+---------+----------------+
+| id_produto   | int(11)       | NO   | PRI | NULL    | auto_increment |
+| nome         | varchar(255)  | YES  |     | NULL    |                |
+| preco        | decimal(10,2) | YES  |     | NULL    |                |
+| quant        | int(11)       | YES  |     | NULL    |                |
+| marca        | varchar(255)  | YES  |     | NULL    |                |
+| id_categoria | int(11)       | YES  | MUL | NULL    |                |
++--------------+---------------+------+-----+---------+----------------+
+6 rows in set (0.029 sec)
+
+MariaDB [etecmcm2]> alter table produtos add unidade_medida varchar(10);
+Query OK, 0 rows affected (0.016 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [etecmcm2]> select*from produtos
+    -> ;
++------------+---------------+--------+-------+------------+--------------+----------------+
+| id_produto | nome          | preco  | quant | marca      | id_categoria | unidade_medida |
++------------+---------------+--------+-------+------------+--------------+----------------+
+|          1 | sabão em pó   |  30.50 |    50 | omo        |            1 | NULL           |
+|          2 | detergente    |   3.55 |    10 | ypê        |            1 | NULL           |
+|          3 | shampoo       |  30.00 |    50 | dove       |            2 | NULL           |
+|          4 | sabonete      |   3.00 |    50 | dove       |            2 | NULL           |
+|          5 | peito de peru |   8.00 |    70 | seara      |            3 | NULL           |
+|          6 | mussarela     |   4.00 |    80 | sadia      |            3 | NULL           |
+|          7 | sardinha      |   2.00 |    40 | coqueiro   |            4 | NULL           |
+|          8 | milho         |   3.00 |    48 | cepera     |            4 | NULL           |
+|          9 | melancia      |   3.00 |    28 | mineiro    |            6 | NULL           |
+|         10 | tamara        |   7.00 |    38 | mineiro    |            6 | NULL           |
+|         11 | requeijão     |   7.60 |    20 | holandes   |            7 | NULL           |
+|         12 | manteiga      |   7.90 |    15 | presidente |            7 | NULL           |
+|         13 | televisão     | 700.90 |    15 | philco     |            8 | NULL           |
+|         14 | geladeira     | 799.90 |    10 | samsung    |            8 | NULL           |
+|         15 | camiseta      |  70.80 |    18 | nike       |            9 | NULL           |
+|         16 | calça         |  59.90 |    28 | adidas     |            9 | NULL           |
++------------+---------------+--------+-------+------------+--------------+----------------+
+16 rows in set (0.001 sec)
+
+MariaDB [etecmcm2]> update produto set unidade_medida = "un" where id_categoria = 1;
+ERROR 1146 (42S02): Table 'etecmcm2.produto' doesn't exist
+MariaDB [etecmcm2]> update produtos set unidade_medida = "un" where id_categoria = 1;
+Query OK, 2 rows affected (0.013 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [etecmcm2]> select*from produtos;
++------------+---------------+--------+-------+------------+--------------+----------------+
+| id_produto | nome          | preco  | quant | marca      | id_categoria | unidade_medida |
++------------+---------------+--------+-------+------------+--------------+----------------+
+|          1 | sabão em pó   |  30.50 |    50 | omo        |            1 | un             |
+|          2 | detergente    |   3.55 |    10 | ypê        |            1 | un             |
+|          3 | shampoo       |  30.00 |    50 | dove       |            2 | NULL           |
+|          4 | sabonete      |   3.00 |    50 | dove       |            2 | NULL           |
+|          5 | peito de peru |   8.00 |    70 | seara      |            3 | NULL           |
+|          6 | mussarela     |   4.00 |    80 | sadia      |            3 | NULL           |
+|          7 | sardinha      |   2.00 |    40 | coqueiro   |            4 | NULL           |
+|          8 | milho         |   3.00 |    48 | cepera     |            4 | NULL           |
+|          9 | melancia      |   3.00 |    28 | mineiro    |            6 | NULL           |
+|         10 | tamara        |   7.00 |    38 | mineiro    |            6 | NULL           |
+|         11 | requeijão     |   7.60 |    20 | holandes   |            7 | NULL           |
+|         12 | manteiga      |   7.90 |    15 | presidente |            7 | NULL           |
+|         13 | televisão     | 700.90 |    15 | philco     |            8 | NULL           |
+|         14 | geladeira     | 799.90 |    10 | samsung    |            8 | NULL           |
+|         15 | camiseta      |  70.80 |    18 | nike       |            9 | NULL           |
+|         16 | calça         |  59.90 |    28 | adidas     |            9 | NULL           |
++------------+---------------+--------+-------+------------+--------------+----------------+
+16 rows in set (0.000 sec)
+MariaDB [etecmcm2]> SELECT nome, preco FROM produtos;
++---------------+--------+
+| nome          | preco  |
++---------------+--------+
+| sabão em pó   |  30.50 |
+| detergente    |   3.55 |
+| shampoo       |  30.00 |
+| sabonete      |   3.00 |
+| peito de peru |   8.00 |
+| mussarela     |   4.00 |
+| sardinha      |   2.00 |
+| milho         |   3.00 |
+| melancia      |   3.00 |
+| tamara        |   7.00 |
+| requeijão     |   7.60 |
+| manteiga      |   7.90 |
+| televisão     | 700.90 |
+| geladeira     | 799.90 |
+| camiseta      |  70.80 |
+| calça         |  59.90 |
++---------------+--------+
+16 rows in set (0.000 sec)
+
+MariaDB [etecmcm2]> SELECT * FROM produtos WHERE marca = 'coqueiro';
++------------+----------+-------+-------+----------+--------------+----------------+
+| id_produto | nome     | preco | quant | marca    | id_categoria | unidade_medida |
++------------+----------+-------+-------+----------+--------------+----------------+
+|          7 | sardinha |  2.00 |    40 | coqueiro |            4 | un             |
++------------+----------+-------+-------+----------+--------------+----------------+
+1 row in set (0.000 sec)
+
+MariaDB [etecmcm2]> SELECT * FROM produtos WHERE preco > 15;
++------------+-------------+--------+-------+---------+--------------+----------------+
+| id_produto | nome        | preco  | quant | marca   | id_categoria | unidade_medida |
++------------+-------------+--------+-------+---------+--------------+----------------+
+|          1 | sabão em pó |  30.50 |    50 | omo     |            1 | un             |
+|          3 | shampoo     |  30.00 |    50 | dove    |            2 | NULL           |
+|         13 | televisão   | 700.90 |    15 | philco  |            8 | un             |
+|         14 | geladeira   | 799.90 |    10 | samsung |            8 | un             |
+|         15 | camiseta    |  70.80 |    18 | nike    |            9 | un             |
+|         16 | calça       |  59.90 |    28 | adidas  |            9 | un             |
++------------+-------------+--------+-------+---------+--------------+----------------+
+6 rows in set (0.000 sec)
+
+MariaDB [etecmcm2]> SELECT * FROM produtos WHERE quant <= 60;
++------------+-------------+--------+-------+------------+--------------+----------------+
+| id_produto | nome        | preco  | quant | marca      | id_categoria | unidade_medida |
++------------+-------------+--------+-------+------------+--------------+----------------+
+|          1 | sabão em pó |  30.50 |    50 | omo        |            1 | un             |
+|          2 | detergente  |   3.55 |    10 | ypê        |            1 | un             |
+|          3 | shampoo     |  30.00 |    50 | dove       |            2 | NULL           |
+|          4 | sabonete    |   3.00 |    50 | dove       |            2 | NULL           |
+|          7 | sardinha    |   2.00 |    40 | coqueiro   |            4 | un             |
+|          8 | milho       |   3.00 |    48 | cepera     |            4 | un             |
+|          9 | melancia    |   3.00 |    28 | mineiro    |            6 | g              |
+|         10 | tamara      |   7.00 |    38 | mineiro    |            6 | g              |
+|         11 | requeijão   |   7.60 |    20 | holandes   |            7 | un             |
+|         12 | manteiga    |   7.90 |    15 | presidente |            7 | un             |
+|         13 | televisão   | 700.90 |    15 | philco     |            8 | un             |
+|         14 | geladeira   | 799.90 |    10 | samsung    |            8 | un             |
+|         15 | camiseta    |  70.80 |    18 | nike       |            9 | un             |
+|         16 | calça       |  59.90 |    28 | adidas     |            9 | un             |
++------------+-------------+--------+-------+------------+--------------+----------------+
+14 rows in set (0.001 sec)
+
+MariaDB [etecmcm2]> SELECT nome, preco FROM produtos ORDER BY preco ASC LIMIT 5;
++------------+-------+
+| nome       | preco |
++------------+-------+
+| sardinha   |  2.00 |
+| sabonete   |  3.00 |
+| milho      |  3.00 |
+| melancia   |  3.00 |
+| detergente |  3.55 |
++------------+-------+
+5 rows in set (0.000 sec)
+
+MariaDB [etecmcm2]> SELECT nome, preco FROM produtos ORDER BY preco DESC LIMIT 5;
++-------------+--------+
+| nome        | preco  |
++-------------+--------+
+| geladeira   | 799.90 |
+| televisão   | 700.90 |
+| camiseta    |  70.80 |
+| calça       |  59.90 |
+| sabão em pó |  30.50 |
++-------------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [etecmcm2]> SELECT COUNT(*) AS total_produtos FROM produtos;
++----------------+
+| total_produtos |
++----------------+
+|             16 |
++----------------+
+1 row in set (0.000 sec)
+
+MariaDB [etecmcm2]> SELECT AVG(preco) AS preco_medio FROM produtos;
++-------------+
+| preco_medio |
++-------------+
+|  108.815625 |
++-------------+
+1 row in set (0.001 sec)
+
+MariaDB [etecmcm2]> SELECT nome, quant FROM produtos ORDER BY quant DESC LIMIT 1;
++-----------+-------+
+| nome      | quant |
++-----------+-------+
+| mussarela |    80 |
++-----------+-------+
+1 row in set (0.000 sec)
+MariaDB [etecmcm2]> SELECT p.nome, c.nome_cat FROM produtos p JOIN categorias c ON p.id_categoria = c.id_categoria;
++---------------+-------------+
+| nome          | nome_cat    |
++---------------+-------------+
+| sabão em pó   | limpeza     |
+| detergente    | limpeza     |
+| shampoo       | higiene     |
+| sabonete      | higiene     |
+| peito de peru | frios       |
+| mussarela     | frios       |
+| sardinha      | enlatados   |
+| milho         | enlatados   |
+| melancia      | hortifrut   |
+| tamara        | hortifrut   |
+| requeijão     | laticinios  |
+| manteiga      | laticinios  |
+| televisão     | eletronicos |
+| geladeira     | eletronicos |
+| camiseta      | roupas      |
+| calça         | roupas      |
++---------------+-------------+
+16 rows in set (0.001 sec)
+
+MariaDB [etecmcm2]> SELECT p.nome, p.marca, p.preco FROM produtos p JOIN categorias c ON p.id_categoria = c.id_categoria WHERE c.nome_cat = 'Laticínios';
++-----------+------------+-------+
+| nome      | marca      | preco |
++-----------+------------+-------+
+| requeijão | holandes   |  7.60 |
+| manteiga  | presidente |  7.90 |
++-----------+------------+-------+
+2 rows in set (0.001 sec)
+
+MariaDB [etecmcm2]> SELECT c.nome_cat, COUNT(*) AS total_produtos FROM produtos p JOIN categorias c ON p.id_categoria = c.id_categoria GROUP BY c.nome_cat;
++-------------+----------------+
+| nome_cat    | total_produtos |
++-------------+----------------+
+| eletronicos |              2 |
+| enlatados   |              2 |
+| frios       |              2 |
+| higiene     |              2 |
+| hortifrut   |              2 |
+| laticinios  |              2 |
+| limpeza     |              2 |
+| roupas      |              2 |
++-------------+----------------+
+8 rows in set (0.001 sec)
+MariaDB [etecmcm2]> SELECT * FROM produtos where preco between 10 and 20;
+Empty set (0.001 sec)
+
+MariaDB [etecmcm2]> SELECT * FROM produtos
+    -> WHERE nome LIKE 'P%';
++------------+---------------+-------+-------+-------+--------------+----------------+
+| id_produto | nome          | preco | quant | marca | id_categoria | unidade_medida |
++------------+---------------+-------+-------+-------+--------------+----------------+
+|          5 | peito de peru |  8.00 |    70 | seara |            3 | g              |
++------------+---------------+-------+-------+-------+--------------+----------------+
+1 row in set (0.000 sec)
+
+MariaDB [etecmcm2]> SELECT DISTINCT marca FROM produtos;
++------------+
+| marca      |
++------------+
+| omo        |
+| ypê        |
+| dove       |
+| seara      |
+| sadia      |
+| coqueiro   |
+| cepera     |
+| mineiro    |
+| holandes   |
+| presidente |
+| philco     |
+| samsung    |
+| nike       |
+| adidas     |
++------------+
+14 rows in set (0.001 sec)
